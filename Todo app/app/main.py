@@ -11,8 +11,10 @@ class TodoApp(QtWidgets.QWidget):
             ("desc", "TEXT"),
             ("status", "INTEGER NOT NULL CHECK (status IN (0, 1)) DEFAULT 0")
         ])
+        self.data = retrieve_elements("tasks")
         self.main_layout = QtWidgets.QHBoxLayout(self)        
         self.main_layout.addLayout(self.left_side())
+        print(self.data)
     
     def left_side(self):
         layout = QtWidgets.QVBoxLayout(self)

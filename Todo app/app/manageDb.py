@@ -22,14 +22,20 @@ def create_table(table_name:str, columns:list):
 def create_element(table_name:str, elements):
 
     element_definitions = ", ".join([f"{element['name']}" for element in elements])
-    values = ", ".join([f"{element['value']}" for element in elements])
+    values = tuple([f"{element['value']}" for element in elements])
     print(element_definitions)
     
     print(f"INSERT INTO {table_name} ({element_definitions}) VALUES ({values})")
     
     cursor.execute(f'''
-        INSERT INTO {table_name} ({element_definitions}) VALUES ({values})
+        INSERT INTO {table_name} ({element_definitions}) VALUES {values}
     ''')
 
 
     conn.commit()
+
+
+def retrieve_elements(table_name:str):
+    cursor.execute(f"SELECT * FROM {table_name}")
+    data = cursor.fetchall()
+    return data
