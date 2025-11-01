@@ -14,6 +14,7 @@ class TodoApp(QtWidgets.QWidget):
         self.data = retrieve_elements("tasks")
         self.main_layout = QtWidgets.QHBoxLayout(self)        
         self.main_layout.addLayout(self.left_side())
+        self.main_layout.addLayout(self.items())
         print(self.data)
     
     def left_side(self):
@@ -41,6 +42,19 @@ class TodoApp(QtWidgets.QWidget):
             {'name':'desc', 'value': desc_value}
         ])
 
+    def item_card(self, item_text):
+        item_layout = QtWidgets.QVBoxLayout()
+        item_label = QtWidgets.QLabel(item_text)
+
+        item_layout.addWidget(item_label)
+        return item_layout
+
+    def items(self):
+        items_layout= QtWidgets.QVBoxLayout()
+        for item in self.data:
+            items_layout.addLayout(self.item_card(item[1]))
+
+        return items_layout
 
 
         
