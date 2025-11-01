@@ -14,7 +14,8 @@ class TodoApp(QtWidgets.QWidget):
         self.data = retrieve_elements("tasks")
         self.main_layout = QtWidgets.QHBoxLayout(self)        
         self.main_layout.addLayout(self.left_side())
-        self.main_layout.addLayout(self.items())
+        self.right_layout = self.items()
+        self.main_layout.addLayout(self.right_layout)
         print(self.data)
     
     def left_side(self):
@@ -41,20 +42,41 @@ class TodoApp(QtWidgets.QWidget):
             {'name':'title', 'value':title_value},
             {'name':'desc', 'value': desc_value}
         ])
+        self.clear_layout(self.right_layout)
+        self.data = retrieve_elements("tasks")
+        self.right_layout = self.items()
+        self.main_layout.addLayout(self.right_layout)
 
-    def item_card(self, item_text):
+    def item_card(self, item):
         item_layout = QtWidgets.QVBoxLayout()
-        item_label = QtWidgets.QLabel(item_text)
-
-        item_layout.addWidget(item_label)
+        item_title = QtWidgets.QLabel(item[1])
+        item_desc = QtWidgets.QLabel(item[2])
+        btn_layout = QtWidgets.QHBoxLayout()
+        complete_btn = QtWidgets.QPushButton("Complete" if item[3] == 0 else "Undo")
+        delete_btn = QtWidgets.QPushButton("Delete")
+        item_layout.addWidget(item_title)
+        item_layout.addWidget(item_desc)
+        btn_layout.addWidget(complete_btn)
+        btn_layout.addWidget(delete_btn)
+        item_layout.addLayout(btn_layout)
         return item_layout
 
     def items(self):
         items_layout= QtWidgets.QVBoxLayout()
         for item in self.data:
-            items_layout.addLayout(self.item_card(item[1]))
+            items_layout.addLayout(self.item_card(item))
 
         return items_layout
+    
+
+    def clear_layout(self, layout):
+        if layout is not None:
+            while layout.count():
+                child = layout.takeAt(0)
+                if child.widget() is not None:
+                    child.widget().deleteLater()
+                elif child.layout() is not None:
+                    self.clear_layout(child.layout())
 
 
         
