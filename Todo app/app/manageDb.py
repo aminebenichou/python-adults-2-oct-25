@@ -39,3 +39,19 @@ def retrieve_elements(table_name:str):
     cursor.execute(f"SELECT * FROM {table_name}")
     data = cursor.fetchall()
     return data
+
+
+def update_element(table_name:str, element):
+    # element={
+    #  'id':1, 'data':[{'name': 'title', 'value':'ashvdas'}, {'name': 'status', 'value':1}]
+    # }
+
+    element_id = element["id"]
+    # {e['name']} = '{e['value']}'
+    element_definitions = ", ".join([f"{f"{e['name']} = {e['value']}" if e['name']=='status' else f"{e['name']} = '{e['value']}'"}" for e in element['data']])
+    print(element_definitions)
+    cursor.execute(f'''
+        UPDATE {table_name} SET {element_definitions} WHERE id={element_id}
+        ''')
+    
+    conn.commit()

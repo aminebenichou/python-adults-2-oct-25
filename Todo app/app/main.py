@@ -59,7 +59,25 @@ class TodoApp(QtWidgets.QWidget):
         btn_layout.addWidget(complete_btn)
         btn_layout.addWidget(delete_btn)
         item_layout.addLayout(btn_layout)
+        complete_btn.clicked.connect(self.complete_update)
         return item_layout
+    
+    def complete_update(self):
+        update_element('tasks', {
+            'id': 1, 
+            'data':[
+                {
+                    'name':'title',
+                    'value': 'hello from update'
+
+                },
+                {
+                    'name':'status',
+                    'value': 0
+
+                }
+            ]
+        })
 
     def items(self):
         items_layout= QtWidgets.QVBoxLayout()
